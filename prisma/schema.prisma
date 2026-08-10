@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String   @map("password_hash")
+  displayName  String?  @map("display_name")
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("admins")
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  label       String
+  image       String?
+  bannerImage String?   @map("banner_image")
+  bannerAlt   String?   @map("banner_alt")
+  sortOrder   Int       @default(0) @map("sort_order")
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  products    Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id           String   @id
+  name         String
+  price        Int      @default(0)
+  salePrice    Int?     @map("sale_price")
+  image        String
+  images       String[] @default([])
+  sku          String?
+  stock        Int      @default(0)
+  prepDays     Int      @default(2) @map("prep_days")
+  description  String   @default("") @db.Text
+  shippingInfo String   @default("") @map("shipping_info") @db.Text
+  howToOrder   String   @default("") @map("how_to_order") @db.Text
+  categoryId   String   @map("category_id")
+  category     Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  isActive     Boolean  @default(true) @map("is_active")
+  isNew        Boolean  @default(false) @map("is_new")
+  isRecommend  Boolean  @default(false) @map("is_recommend")
+  sortOrder    Int      @default(0) @map("sort_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("products")
+}
+
+model SiteContent {
+  id        String   @id
+  content   Json
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("site_content")
+}
