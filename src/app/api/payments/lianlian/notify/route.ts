@@ -30,15 +30,17 @@ export async function POST(request: Request) {
     }
 
     if (payload.order_status === "PS") {
-      updateOrderStatus(orderNo, "paid", {
+      await updateOrderStatus(orderNo, "paid", {
         paidAt: payload.complete_time
           ? new Date(payload.complete_time.replace(" ", "T") + "+07:00").toISOString()
           : new Date().toISOString(),
         lianlianOrderId: payload.order_id,
+        paymentProvider: "lianlian",
       });
     } else if (payload.order_status === "PF" || payload.order_status === "PE") {
-      updateOrderStatus(orderNo, "failed", {
+      await updateOrderStatus(orderNo, "failed", {
         lianlianOrderId: payload.order_id,
+        paymentProvider: "lianlian",
       });
     }
 

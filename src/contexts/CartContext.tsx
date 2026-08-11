@@ -97,6 +97,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = useCallback(() => {
     setItems([]);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify([]));
+    }
   }, []);
 
   const value = useMemo<CartContextValue>(

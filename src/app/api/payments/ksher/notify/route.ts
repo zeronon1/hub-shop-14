@@ -23,12 +23,15 @@ export async function POST(request: Request) {
     const ksherOrderNo = String(payload.ksher_order_no ?? "");
 
     if (orderNo && result === "SUCCESS") {
-      updateOrderStatus(orderNo, "paid", {
+      await updateOrderStatus(orderNo, "paid", {
         paidAt: new Date().toISOString(),
         ksherOrderNo: ksherOrderNo || undefined,
+        paymentProvider: "ksher",
       });
     } else if (orderNo && result === "FAIL") {
-      updateOrderStatus(orderNo, "failed");
+      await updateOrderStatus(orderNo, "failed", {
+        paymentProvider: "ksher",
+      });
     }
 
     return NextResponse.json({ received: true });

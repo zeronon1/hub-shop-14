@@ -7,7 +7,7 @@ import {
   ksherNonce,
   ksherTimestamp,
 } from "@/lib/ksher";
-import { saveOrder, type Order } from "@/lib/orders";
+import { saveOrder } from "@/lib/orders";
 
 type CreatePaymentBody = {
   items: CartItem[];
@@ -40,17 +40,21 @@ export async function POST(request: Request) {
 
     const payableItems = body.items.filter((item) => item.priceBaht > 0);
     if (!payableItems.length) {
-      return NextResponse.json({ error: "สินค้าในตะกร้าไม่สามารถชำระเงินออนไลน์ได้" }, { status: 400 });
+      return NextResponse.json(
+        { error: "สินค้าในตะกร้าไม่สามารถชำระเงินออนไลน์ได้" },
+        { status: 400 },
+      );
     }
 
     const orderNo = generateOrderNo();
     const totalSatang = cartTotalSatang(payableItems);
-    const productName = payableItems
-      .map((item) => item.name.slice(0, 40))
-      .join(", ")
-      .slice(0, 120) || "Momotaro Shop Order";
+    const productName =
+      payableItems
+        .map((item) => item.name.slice(0, 40))
+        .join(", ")
+        .slice(0, 120) || "Momotaro Shop Order";
 
-    const order: Order = {
+    await saveOrder({
       orderNo,
       items: payableItems,
       totalSatang,
@@ -60,9 +64,8 @@ export async function POST(request: Request) {
       shippingAddress: body.shippingAddress.trim(),
       note: body.note?.trim(),
       status: "pending",
-      createdAt: new Date().toISOString(),
-    };
-    saveOrder(order);
+      paymentProvider: "ksher",
+    });
 
     const redirectBase = `${siteUrl.replace(/\/$/, "")}/checkout`;
     const params = {

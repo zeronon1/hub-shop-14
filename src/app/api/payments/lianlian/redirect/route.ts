@@ -31,16 +31,20 @@ export async function POST(request: Request) {
     const lianlianOrderId = payload.order_id;
 
     if (orderNo && status === "PS") {
-      updateOrderStatus(orderNo, "paid", {
+      await updateOrderStatus(orderNo, "paid", {
         paidAt: new Date().toISOString(),
         lianlianOrderId,
+        paymentProvider: "lianlian",
       });
       return NextResponse.redirect(`${base}/checkout/success?order=${encodeURIComponent(orderNo)}`, 303);
     }
 
     if (orderNo) {
       if (status === "PF" || status === "PE") {
-        updateOrderStatus(orderNo, "failed", { lianlianOrderId });
+        await updateOrderStatus(orderNo, "failed", {
+          lianlianOrderId,
+          paymentProvider: "lianlian",
+        });
       }
       return NextResponse.redirect(`${base}/checkout/fail?order=${encodeURIComponent(orderNo)}`, 303);
     }

@@ -11,6 +11,7 @@ const pageEditItems = [
 ] as const;
 
 const navItems = [
+  { href: "/admin/orders", label: "จัดการคำสั่งซื้อ" },
   { href: "/admin/navigation", label: "จัดการเมนู" },
   { href: "/admin/products", label: "จัดการสินค้า" },
   { href: "/admin/categories", label: "จัดการหมวดหมู่" },

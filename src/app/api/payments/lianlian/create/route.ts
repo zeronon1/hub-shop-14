@@ -9,7 +9,7 @@ import {
   isLianlianConfigured,
   LIANLIAN_SUCCESS_CODE,
 } from "@/lib/lianlian";
-import { saveOrder, type Order } from "@/lib/orders";
+import { patchOrderPaymentIds, saveOrder } from "@/lib/orders";
 import { siteInfo } from "@/lib/site-data";
 
 type CreatePaymentBody = {
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
         .join(", ")
         .slice(0, 200) || `${siteInfo.name} Order`;
 
-    const order: Order = {
+    await saveOrder({
       orderNo,
       items: payableItems,
       totalSatang: Math.round(totalBaht * 100),
@@ -68,10 +68,8 @@ export async function POST(request: Request) {
       shippingAddress: body.shippingAddress.trim(),
       note: body.note?.trim(),
       status: "pending",
-      createdAt: new Date().toISOString(),
       paymentProvider: "lianlian",
-    };
-    saveOrder(order);
+    });
 
     const result = await createLianlianCheckout({
       merchant_order_id: orderNo,
@@ -101,6 +99,17 @@ export async function POST(request: Request) {
         { error: result.message || "ไม่สามารถสร้างรายการชำระเงินได้" },
         { status: 502 },
       );
+    }
+
+    if (result.data.order_id) {
+      try {
+        await patchOrderPaymentIds(orderNo, {
+          lianlianOrderId: result.data.order_id,
+          paymentProvider: "lianlian",
+        });
+      } catch (persistError) {
+        console.error("[lianlian/create] failed to persist lianlianOrderId", persistError);
+      }
     }
 
     return NextResponse.json({

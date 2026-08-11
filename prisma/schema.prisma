@@ -67,3 +67,56 @@ model SiteContent {
 
   @@map("site_content")
 }
+
+enum OrderStatus {
+  pending
+  paid
+  processing
+  shipped
+  completed
+  failed
+  cancelled
+}
+
+enum PaymentProvider {
+  lianlian
+  ksher
+}
+
+model Order {
+  id              String           @id @default(cuid())
+  orderNo         String           @unique @map("order_no")
+  status          OrderStatus      @default(pending)
+  customerName    String           @map("customer_name")
+  customerPhone   String           @map("customer_phone")
+  customerEmail   String           @default("") @map("customer_email")
+  shippingAddress String           @map("shipping_address") @db.Text
+  note            String?          @db.Text
+  adminNote       String?          @map("admin_note") @db.Text
+  trackingNumber  String?          @map("tracking_number")
+  totalSatang     Int              @map("total_satang")
+  paymentProvider PaymentProvider? @map("payment_provider")
+  ksherOrderNo    String?          @map("ksher_order_no")
+  lianlianOrderId String?          @map("lianlian_order_id")
+  paidAt          DateTime?        @map("paid_at")
+  shippedAt       DateTime?        @map("shipped_at")
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  items           OrderItem[]
+
+  @@index([status, createdAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String @id @default(cuid())
+  orderId   String @map("order_id")
+  order     Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String @map("product_id")
+  name      String
+  image     String @default("")
+  priceBaht Int    @map("price_baht")
+  quantity  Int
+
+  @@map("order_items")
+}
