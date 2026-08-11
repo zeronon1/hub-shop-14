@@ -1,9 +1,14 @@
 import crypto from "crypto";
+import https from "https";
+import { URL } from "url";
 
 const GATEWAY = {
   sandbox: "https://sandbox-th.lianlianpay-inc.com/gateway",
   production: "https://api.lianlianpay.co.th/gateway",
 } as const;
+
+/** Sandbox มักช้าจากไทย — undici fetch default connect timeout ~10s ไม่พอ */
+const GATEWAY_TIMEOUT_MS = 90_000;
 
 export const LIANLIAN_SUCCESS_CODE = 200000;
 
@@ -191,6 +196,61 @@ export function isLianlianConfigured(): boolean {
   return Boolean(merchantId && privateKey);
 }
 
+type GatewayHttpResponse = {
+  status: number;
+  text: string;
+};
+
+function requestGateway(
+  method: "GET" | "POST",
+  gatewayUrl: string,
+  headers: Record<string, string>,
+  bodyJson?: string,
+  timeoutMs = GATEWAY_TIMEOUT_MS,
+): Promise<GatewayHttpResponse> {
+  const url = new URL(gatewayUrl);
+  const body = bodyJson ? Buffer.from(bodyJson, "utf8") : undefined;
+
+  return new Promise((resolve, reject) => {
+    const req = https.request(
+      {
+        protocol: url.protocol,
+        hostname: url.hostname,
+        port: url.port || 443,
+        path: `${url.pathname}${url.search}`,
+        method,
+        headers: {
+          ...headers,
+          ...(body ? { "Content-Length": body.byteLength } : {}),
+        },
+        timeout: timeoutMs,
+        servername: url.hostname,
+      },
+      (res) => {
+        const chunks: Buffer[] = [];
+        res.on("data", (chunk: Buffer) => chunks.push(chunk));
+        res.on("end", () => {
+          resolve({
+            status: res.statusCode ?? 0,
+            text: Buffer.concat(chunks).toString("utf8"),
+          });
+        });
+      },
+    );
+
+    req.on("timeout", () => {
+      req.destroy(
+        Object.assign(new Error(`LianLian gateway timeout after ${timeoutMs}ms`), {
+          code: "LIANLIAN_TIMEOUT",
+        }),
+      );
+    });
+    req.on("error", reject);
+    if (body) req.write(body);
+    req.end();
+  });
+}
+
 async function callGateway<T>(
   method: "GET" | "POST",
   bodyOrQuery: JsonObject,
@@ -198,13 +258,15 @@ async function callGateway<T>(
   gatewayUrl: string,
 ): Promise<LianlianApiResponse<T>> {
   const sign = lianlianSign(bodyOrQuery, privateKey);
-  const headers: HeadersInit = {
+  const headers: Record<string, string> = {
     "Content-Type": "application/json",
     "sign-type": "RSA",
     sign,
   };
 
-  let response: Response;
+  let requestUrl = gatewayUrl;
+  let bodyJson: string | undefined;
+
   if (method === "GET") {
     const qs = new URLSearchParams();
     for (const [key, value] of Object.entries(bodyOrQuery)) {
@@ -212,21 +274,42 @@ async function callGateway<T>(
         qs.set(key, String(value));
       }
     }
-    response = await fetch(`${gatewayUrl}?${qs.toString()}`, {
-      method: "GET",
-      headers,
-      cache: "no-store",
-    });
+    requestUrl = `${gatewayUrl}?${qs.toString()}`;
   } else {
-    response = await fetch(gatewayUrl, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(bodyOrQuery),
-      cache: "no-store",
-    });
+    bodyJson = JSON.stringify(bodyOrQuery);
   }
 
-  return response.json() as Promise<LianlianApiResponse<T>>;
+  let response: GatewayHttpResponse;
+  try {
+    response = await requestGateway(method, requestUrl, headers, bodyJson);
+  } catch (error) {
+    const err = error as NodeJS.ErrnoException;
+    console.error("[lianlian/gateway] network error", {
+      url: requestUrl,
+      code: err.code,
+      message: err.message,
+    });
+    return {
+      code: -1,
+      message:
+        err.code === "LIANLIAN_TIMEOUT" || err.code === "ETIMEDOUT"
+          ? "เชื่อมต่อ LianLian ช้า/หมดเวลา — กรุณาลองใหม่อีกครั้ง"
+          : `เชื่อมต่อ LianLian ไม่สำเร็จ (${err.code ?? err.message})`,
+    };
+  }
+
+  try {
+    return JSON.parse(response.text) as LianlianApiResponse<T>;
+  } catch {
+    console.error("[lianlian/gateway] response (non-JSON)", {
+      httpStatus: response.status,
+      body: response.text,
+    });
+    return {
+      code: -1,
+      message: `LianLian ตอบกลับไม่ใช่ JSON (HTTP ${response.status})`,
+    };
+  }
 }
 
 export async function createLianlianCheckout(

@@ -78,88 +78,122 @@ export default function CheckoutClient() {
         throw new Error(data.error ?? "ไม่สามารถสร้างรายการชำระเงินได้");
       }
 
+      // คง loading ไว้จนกว่าจะออกจากหน้า
       window.location.assign(data.payUrl);
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "เกิดข้อผิดพลาด");
-    } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-12">
-      <form onSubmit={handleSubmit} className="space-y-5 lg:col-span-7">
-        <section className="rounded-xl border-2 border-neutral-300 bg-white p-6">
-          <h2 className="mb-4 text-lg font-bold">ข้อมูลผู้สั่งซื้อ</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <label className="block sm:col-span-2">
-              <span className="mb-1.5 block text-sm font-semibold">ชื่อ-นามสกุล *</span>
-              <input
-                required
-                value={form.customerName}
-                onChange={(event) => updateField("customerName", event.target.value)}
-                className="w-full rounded-lg border-2 border-neutral-300 px-4 py-2.5 text-sm outline-none focus:border-red"
-                placeholder="ชื่อผู้รับสินค้า"
-              />
-            </label>
-            <label className="block">
-              <span className="mb-1.5 block text-sm font-semibold">เบอร์โทร *</span>
-              <input
-                required
-                type="tel"
-                value={form.customerPhone}
-                onChange={(event) => updateField("customerPhone", event.target.value)}
-                className="w-full rounded-lg border-2 border-neutral-300 px-4 py-2.5 text-sm outline-none focus:border-red"
-                placeholder="08x-xxx-xxxx"
-              />
-            </label>
-            <label className="block">
-              <span className="mb-1.5 block text-sm font-semibold">อีเมล</span>
-              <input
-                type="email"
-                value={form.customerEmail}
-                onChange={(event) => updateField("customerEmail", event.target.value)}
-                className="w-full rounded-lg border-2 border-neutral-300 px-4 py-2.5 text-sm outline-none focus:border-red"
-                placeholder="email@example.com"
-              />
-            </label>
-            <label className="block sm:col-span-2">
-              <span className="mb-1.5 block text-sm font-semibold">ที่อยู่จัดส่ง *</span>
-              <textarea
-                required
-                rows={3}
-                value={form.shippingAddress}
-                onChange={(event) => updateField("shippingAddress", event.target.value)}
-                className="w-full rounded-lg border-2 border-neutral-300 px-4 py-2.5 text-sm outline-none focus:border-red"
-                placeholder="บ้านเลขที่ ถนน แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์"
-              />
-            </label>
-            <label className="block sm:col-span-2">
-              <span className="mb-1.5 block text-sm font-semibold">หมายเหตุ</span>
-              <textarea
-                rows={2}
-                value={form.note}
-                onChange={(event) => updateField("note", event.target.value)}
-                className="w-full rounded-lg border-2 border-neutral-300 px-4 py-2.5 text-sm outline-none focus:border-red"
-                placeholder="ข้อความถึงร้าน (ถ้ามี)"
-              />
-            </label>
-          </div>
-        </section>
-
-        {error ? (
-          <p className="rounded-lg border-2 border-red/30 bg-red-light px-4 py-3 text-sm font-medium text-red">
-            {error}
-          </p>
-        ) : null}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="flex w-full items-center justify-center rounded-full bg-red px-6 py-3.5 text-sm font-bold text-white transition-colors hover:bg-red-dark disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:min-w-56"
+    <div className="relative grid gap-8 lg:grid-cols-12">
+      {loading ? (
+        <div
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-black/45 px-4"
+          role="status"
+          aria-live="polite"
+          aria-busy="true"
         >
-          {loading ? "กำลังไปหน้าชำระเงิน..." : "ชำระเงินอย่างปลอดภัย"}
-        </button>
+          <div className="flex w-full max-w-sm flex-col items-center gap-4 rounded-2xl bg-white px-8 py-10 text-center shadow-xl">
+            <span
+              className="h-10 w-10 animate-spin rounded-full border-4 border-neutral-200 border-t-red"
+              aria-hidden="true"
+            />
+            <div>
+              <p className="text-base font-bold">กำลังเชื่อมต่อระบบชำระเงิน</p>
+              <p className="mt-1 text-sm text-foreground/65">
+                อาจใช้เวลาสักครู่ กรุณาอย่าปิดหน้านี้
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      <form onSubmit={handleSubmit} className="space-y-5 lg:col-span-7">
+        <fieldset disabled={loading} className="min-w-0 space-y-5 border-0 p-0">
+          <section className="rounded-xl border-2 border-neutral-300 bg-white p-6">
+            <h2 className="mb-4 text-lg font-bold">ข้อมูลผู้สั่งซื้อ</h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="block sm:col-span-2">
+                <span className="mb-1.5 block text-sm font-semibold">ชื่อ-นามสกุล *</span>
+                <input
+                  required
+                  value={form.customerName}
+                  onChange={(event) => updateField("customerName", event.target.value)}
+                  className="w-full rounded-lg border-2 border-neutral-300 px-4 py-2.5 text-sm outline-none focus:border-red"
+                  placeholder="ชื่อผู้รับสินค้า"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-1.5 block text-sm font-semibold">เบอร์โทร *</span>
+                <input
+                  required
+                  type="tel"
+                  value={form.customerPhone}
+                  onChange={(event) => updateField("customerPhone", event.target.value)}
+                  className="w-full rounded-lg border-2 border-neutral-300 px-4 py-2.5 text-sm outline-none focus:border-red"
+                  placeholder="08x-xxx-xxxx"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-1.5 block text-sm font-semibold">อีเมล</span>
+                <input
+                  type="email"
+                  value={form.customerEmail}
+                  onChange={(event) => updateField("customerEmail", event.target.value)}
+                  className="w-full rounded-lg border-2 border-neutral-300 px-4 py-2.5 text-sm outline-none focus:border-red"
+                  placeholder="email@example.com"
+                />
+              </label>
+              <label className="block sm:col-span-2">
+                <span className="mb-1.5 block text-sm font-semibold">ที่อยู่จัดส่ง *</span>
+                <textarea
+                  required
+                  rows={3}
+                  value={form.shippingAddress}
+                  onChange={(event) => updateField("shippingAddress", event.target.value)}
+                  className="w-full rounded-lg border-2 border-neutral-300 px-4 py-2.5 text-sm outline-none focus:border-red"
+                  placeholder="บ้านเลขที่ ถนน แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์"
+                />
+              </label>
+              <label className="block sm:col-span-2">
+                <span className="mb-1.5 block text-sm font-semibold">หมายเหตุ</span>
+                <textarea
+                  rows={2}
+                  value={form.note}
+                  onChange={(event) => updateField("note", event.target.value)}
+                  className="w-full rounded-lg border-2 border-neutral-300 px-4 py-2.5 text-sm outline-none focus:border-red"
+                  placeholder="ข้อความถึงร้าน (ถ้ามี)"
+                />
+              </label>
+            </div>
+          </section>
+
+          {error ? (
+            <p className="rounded-lg border-2 border-red/30 bg-red-light px-4 py-3 text-sm font-medium text-red">
+              {error}
+            </p>
+          ) : null}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-red px-6 py-3.5 text-sm font-bold text-white transition-colors hover:bg-red-dark disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto sm:min-w-56"
+          >
+            {loading ? (
+              <>
+                <span
+                  className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"
+                  aria-hidden="true"
+                />
+                กำลังเชื่อมต่อ...
+              </>
+            ) : (
+              "ชำระเงินอย่างปลอดภัย"
+            )}
+          </button>
+        </fieldset>
       </form>
 
       <aside className="lg:col-span-5">
