@@ -14,6 +14,17 @@ function isOrderStatus(value: unknown): value is OrderStatus {
   return typeof value === "string" && (ORDER_STATUSES as string[]).includes(value);
 }
 
+function readOptionalString(
+  value: unknown,
+  fieldLabel: string,
+): { ok: true; value: string | null } | { ok: false; error: string } {
+  if (value === null) return { ok: true, value: null };
+  if (typeof value !== "string") {
+    return { ok: false, error: `${fieldLabel}ไม่ถูกต้อง` };
+  }
+  return { ok: true, value: value.trim() };
+}
+
 export async function GET(_request: Request, context: RouteContext) {
   const session = await getSession();
   if (!session) {
@@ -54,12 +65,22 @@ export async function PATCH(request: Request, context: RouteContext) {
       status?: unknown;
       trackingNumber?: unknown;
       adminNote?: unknown;
+      customerName?: unknown;
+      customerPhone?: unknown;
+      customerEmail?: unknown;
+      shippingAddress?: unknown;
+      note?: unknown;
     };
 
     const data: {
       status?: OrderStatus;
       trackingNumber?: string | null;
       adminNote?: string | null;
+      customerName?: string;
+      customerPhone?: string;
+      customerEmail?: string;
+      shippingAddress?: string;
+      note?: string | null;
       shippedAt?: Date;
       paidAt?: Date;
     } = {};
@@ -84,20 +105,68 @@ export async function PATCH(request: Request, context: RouteContext) {
     }
 
     if (body.trackingNumber !== undefined) {
-      if (body.trackingNumber !== null && typeof body.trackingNumber !== "string") {
-        return NextResponse.json({ error: "เลขพัสดุไม่ถูกต้อง" }, { status: 400 });
+      const parsed = readOptionalString(body.trackingNumber, "เลขพัสดุ");
+      if (!parsed.ok) {
+        return NextResponse.json({ error: parsed.error }, { status: 400 });
       }
-      const tracking =
-        typeof body.trackingNumber === "string" ? body.trackingNumber.trim() : "";
-      data.trackingNumber = tracking || null;
+      data.trackingNumber = parsed.value || null;
     }
 
     if (body.adminNote !== undefined) {
-      if (body.adminNote !== null && typeof body.adminNote !== "string") {
-        return NextResponse.json({ error: "หมายเหตุแอดมินไม่ถูกต้อง" }, { status: 400 });
+      const parsed = readOptionalString(body.adminNote, "หมายเหตุแอดมิน");
+      if (!parsed.ok) {
+        return NextResponse.json({ error: parsed.error }, { status: 400 });
       }
-      const note = typeof body.adminNote === "string" ? body.adminNote.trim() : "";
-      data.adminNote = note || null;
+      data.adminNote = parsed.value || null;
+    }
+
+    if (body.customerName !== undefined) {
+      const parsed = readOptionalString(body.customerName, "ชื่อลูกค้า");
+      if (!parsed.ok) {
+        return NextResponse.json({ error: parsed.error }, { status: 400 });
+      }
+      if (!parsed.value) {
+        return NextResponse.json({ error: "กรุณากรอกชื่อลูกค้า" }, { status: 400 });
+      }
+      data.customerName = parsed.value;
+    }
+
+    if (body.customerPhone !== undefined) {
+      const parsed = readOptionalString(body.customerPhone, "เบอร์โทร");
+      if (!parsed.ok) {
+        return NextResponse.json({ error: parsed.error }, { status: 400 });
+      }
+      if (!parsed.value) {
+        return NextResponse.json({ error: "กรุณากรอกเบอร์โทร" }, { status: 400 });
+      }
+      data.customerPhone = parsed.value;
+    }
+
+    if (body.customerEmail !== undefined) {
+      const parsed = readOptionalString(body.customerEmail, "อีเมล");
+      if (!parsed.ok) {
+        return NextResponse.json({ error: parsed.error }, { status: 400 });
+      }
+      data.customerEmail = parsed.value ?? "";
+    }
+
+    if (body.shippingAddress !== undefined) {
+      const parsed = readOptionalString(body.shippingAddress, "ที่อยู่จัดส่ง");
+      if (!parsed.ok) {
+        return NextResponse.json({ error: parsed.error }, { status: 400 });
+      }
+      if (!parsed.value) {
+        return NextResponse.json({ error: "กรุณากรอกที่อยู่จัดส่ง" }, { status: 400 });
+      }
+      data.shippingAddress = parsed.value;
+    }
+
+    if (body.note !== undefined) {
+      const parsed = readOptionalString(body.note, "หมายเหตุลูกค้า");
+      if (!parsed.ok) {
+        return NextResponse.json({ error: parsed.error }, { status: 400 });
+      }
+      data.note = parsed.value || null;
     }
 
     if (Object.keys(data).length === 0) {

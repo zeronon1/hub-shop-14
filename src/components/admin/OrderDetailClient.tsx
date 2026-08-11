@@ -23,6 +23,9 @@ function formatDateTime(iso: string | null | undefined) {
   });
 }
 
+const inputClassName =
+  "w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-red focus:ring-2 focus:ring-red/20";
+
 export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
@@ -32,6 +35,23 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
   const [status, setStatus] = useState<OrderStatus>("pending");
   const [trackingNumber, setTrackingNumber] = useState("");
   const [adminNote, setAdminNote] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [shippingAddress, setShippingAddress] = useState("");
+  const [note, setNote] = useState("");
+
+  const syncForm = (next: Order) => {
+    setOrder(next);
+    setStatus(next.status);
+    setTrackingNumber(next.trackingNumber ?? "");
+    setAdminNote(next.adminNote ?? "");
+    setCustomerName(next.customerName);
+    setCustomerPhone(next.customerPhone);
+    setCustomerEmail(next.customerEmail ?? "");
+    setShippingAddress(next.shippingAddress);
+    setNote(next.note ?? "");
+  };
 
   const loadOrder = async () => {
     setLoading(true);
@@ -42,10 +62,7 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
       if (!response.ok || !data.order) {
         throw new Error(data.error ?? "โหลดคำสั่งซื้อไม่สำเร็จ");
       }
-      setOrder(data.order);
-      setStatus(data.order.status);
-      setTrackingNumber(data.order.trackingNumber ?? "");
-      setAdminNote(data.order.adminNote ?? "");
+      syncForm(data.order);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : "โหลดไม่สำเร็จ");
       setOrder(null);
@@ -67,6 +84,12 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
 
   const handleSave = async () => {
     if (!order) return;
+
+    if (!customerName.trim() || !customerPhone.trim() || !shippingAddress.trim()) {
+      setError("กรุณากรอกชื่อ เบอร์โทร และที่อยู่จัดส่ง");
+      return;
+    }
+
     setSaving(true);
     setError("");
     setMessage("");
@@ -79,16 +102,18 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
           status,
           trackingNumber,
           adminNote,
+          customerName,
+          customerPhone,
+          customerEmail,
+          shippingAddress,
+          note,
         }),
       });
       const data = (await response.json()) as { order?: Order; error?: string };
       if (!response.ok || !data.order) {
         throw new Error(data.error ?? "บันทึกไม่สำเร็จ");
       }
-      setOrder(data.order);
-      setStatus(data.order.status);
-      setTrackingNumber(data.order.trackingNumber ?? "");
-      setAdminNote(data.order.adminNote ?? "");
+      syncForm(data.order);
       setMessage("บันทึกเรียบร้อยแล้ว");
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : "บันทึกไม่สำเร็จ");
@@ -157,28 +182,61 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="rounded-xl border border-gray-200 bg-white p-5">
           <h2 className="text-sm font-semibold text-gray-900">ข้อมูลลูกค้า</h2>
-          <dl className="mt-3 space-y-2 text-sm">
+          <div className="mt-3 space-y-4">
             <div>
-              <dt className="text-gray-500">ชื่อ</dt>
-              <dd className="font-medium text-gray-900">{order.customerName}</dd>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                ชื่อ <span className="text-red">*</span>
+              </label>
+              <input
+                type="text"
+                value={customerName}
+                onChange={(event) => setCustomerName(event.target.value)}
+                className={inputClassName}
+              />
             </div>
             <div>
-              <dt className="text-gray-500">โทรศัพท์</dt>
-              <dd className="text-gray-900">{order.customerPhone}</dd>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                โทรศัพท์ <span className="text-red">*</span>
+              </label>
+              <input
+                type="text"
+                value={customerPhone}
+                onChange={(event) => setCustomerPhone(event.target.value)}
+                className={inputClassName}
+              />
             </div>
             <div>
-              <dt className="text-gray-500">อีเมล</dt>
-              <dd className="text-gray-900">{order.customerEmail || "-"}</dd>
+              <label className="mb-1 block text-sm font-medium text-gray-700">อีเมล</label>
+              <input
+                type="email"
+                value={customerEmail}
+                onChange={(event) => setCustomerEmail(event.target.value)}
+                className={inputClassName}
+              />
             </div>
             <div>
-              <dt className="text-gray-500">ที่อยู่จัดส่ง</dt>
-              <dd className="whitespace-pre-wrap text-gray-900">{order.shippingAddress}</dd>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                ที่อยู่จัดส่ง <span className="text-red">*</span>
+              </label>
+              <textarea
+                value={shippingAddress}
+                onChange={(event) => setShippingAddress(event.target.value)}
+                rows={4}
+                className={inputClassName}
+              />
             </div>
             <div>
-              <dt className="text-gray-500">หมายเหตุลูกค้า</dt>
-              <dd className="whitespace-pre-wrap text-gray-900">{order.note || "-"}</dd>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                หมายเหตุลูกค้า
+              </label>
+              <textarea
+                value={note}
+                onChange={(event) => setNote(event.target.value)}
+                rows={3}
+                className={inputClassName}
+              />
             </div>
-          </dl>
+          </div>
         </section>
 
         <section className="rounded-xl border border-gray-200 bg-white p-5">
@@ -207,7 +265,7 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
                 value={trackingNumber}
                 onChange={(event) => setTrackingNumber(event.target.value)}
                 placeholder="เช่น EMS / Kerry tracking"
-                className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-red focus:ring-2 focus:ring-red/20"
+                className={inputClassName}
               />
             </div>
             <div>
@@ -218,7 +276,7 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
                 value={adminNote}
                 onChange={(event) => setAdminNote(event.target.value)}
                 rows={3}
-                className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-red focus:ring-2 focus:ring-red/20"
+                className={inputClassName}
               />
             </div>
             <button
@@ -227,7 +285,7 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
               onClick={() => void handleSave()}
               className="rounded-lg bg-red px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-dark disabled:opacity-50"
             >
-              {saving ? "กำลังบันทึก..." : "บันทึก"}
+              {saving ? "กำลังบันทึก..." : "บันทึกทั้งหมด"}
             </button>
           </div>
 
