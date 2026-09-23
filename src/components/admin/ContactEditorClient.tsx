@@ -414,7 +414,30 @@ export default function ContactEditorClient() {
               />
             </Field>
 
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="ชื่อ TikTok (แสดงผล)">
+                <input
+                  type="text"
+                  value={contact.tiktokHandle}
+                  onChange={(event) =>
+                    setContact({ ...contact, tiktokHandle: event.target.value })
+                  }
+                  className={inputClass}
+                />
+              </Field>
+              <Field label="TikTok URL">
+                <input
+                  type="url"
+                  value={contact.tiktokUrl}
+                  onChange={(event) =>
+                    setContact({ ...contact, tiktokUrl: event.target.value })
+                  }
+                  className={inputClass}
+                />
+              </Field>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Instagram URL">
                 <input
                   type="url"
@@ -431,16 +454,6 @@ export default function ContactEditorClient() {
                   value={contact.youtubeUrl}
                   onChange={(event) =>
                     setContact({ ...contact, youtubeUrl: event.target.value })
-                  }
-                  className={inputClass}
-                />
-              </Field>
-              <Field label="TikTok URL">
-                <input
-                  type="url"
-                  value={contact.tiktokUrl}
-                  onChange={(event) =>
-                    setContact({ ...contact, tiktokUrl: event.target.value })
                   }
                   className={inputClass}
                 />

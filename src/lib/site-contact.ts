@@ -55,7 +55,11 @@ export function normalizeSiteContactInfo(
       fallback.facebookPageName,
     instagramUrl: trimString(input.instagramUrl),
     youtubeUrl: trimString(input.youtubeUrl),
-    tiktokUrl: trimString(input.tiktokUrl),
+    tiktokUrl:
+      trimString(input.tiktokUrl, fallback.tiktokUrl) || fallback.tiktokUrl,
+    tiktokHandle:
+      trimString(input.tiktokHandle, fallback.tiktokHandle) ||
+      fallback.tiktokHandle,
     mapEmbedUrl: trimString(input.mapEmbedUrl) || null,
     businessHours:
       trimString(input.businessHours, fallback.businessHours) ||

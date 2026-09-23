@@ -15,6 +15,7 @@ export type SiteContactInfo = {
   instagramUrl: string;
   youtubeUrl: string;
   tiktokUrl: string;
+  tiktokHandle: string;
   mapEmbedUrl: string | null;
   businessHours: string;
 };

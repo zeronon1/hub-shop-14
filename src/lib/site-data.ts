@@ -2,7 +2,7 @@ export const siteInfo = {
   name: "Momotaro Shop",
   tagline:
     "ร้านโมเดล ฟิกเกอร์ และของสะสมลิขสิทธิ์จากประเทศญี่ปุ่น คัดสรรสินค้าคุณภาพสำหรับนักสะสมทุกระดับ",
-  logo: "/logo/momotaro-logo.svg",
+  logo: "/logo/logo-one-box-card-game-shop.png",
   aboutTitle: "เกี่ยวกับ Momotaro Shop",
   aboutParagraphs: [
     "Momotaro Shop คือร้านโมเดล ฟิกเกอร์ และของสะสมลิขสิทธิ์จากประเทศญี่ปุ่น ที่ก่อตั้งขึ้นจากความชื่นชอบในอนิเมะและวัฒนธรรมการสะสม โดยมุ่งมั่นในการคัดสรรสินค้าคุณภาพสำหรับนักสะสมทุกระดับ",

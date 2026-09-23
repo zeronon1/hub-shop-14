@@ -63,6 +63,16 @@ export default async function ContactPage() {
                 >
                   ไปที่ Facebook
                 </a>
+                {contact.tiktokUrl ? (
+                  <a
+                    href={contact.tiktokUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center rounded-full border border-black/15 bg-white px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-red/40 hover:text-red"
+                  >
+                    ไปที่ TikTok
+                  </a>
+                ) : null}
               </div>
             </div>
 

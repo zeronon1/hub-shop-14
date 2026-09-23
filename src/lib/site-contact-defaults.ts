@@ -13,7 +13,8 @@ export const defaultSiteContactInfo: SiteContactInfo = {
   facebookPageName: "Momotaro Shop",
   instagramUrl: "",
   youtubeUrl: "",
-  tiktokUrl: "",
+  tiktokUrl: "https://www.tiktok.com/@onebox110?_r=1&_t=ZS-99y7bmnlWkP",
+  tiktokHandle: "@onebox110",
   mapEmbedUrl: null,
   businessHours: "เปิดให้บริการทุกวัน — ติดต่อสอบถามเวลาทาง Line หรือ Facebook",
 };
