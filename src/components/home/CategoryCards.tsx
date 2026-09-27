@@ -27,7 +27,7 @@ export default function CategoryCards({ cards }: CategoryCardsProps) {
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </div>
 
-            <div className="flex min-h-[52px] shrink-0 items-center justify-center border-t-2 border-red bg-panel-gradient px-3 py-3 sm:min-h-[56px] sm:py-3.5">
+            <div className="flex min-h-[52px] shrink-0 items-center justify-center border-t-2 border-white/30 bg-panel-gradient px-3 py-3 sm:min-h-[56px] sm:py-3.5">
               <span className="text-center text-sm font-bold uppercase tracking-wide text-white sm:text-base">
                 {card.title}
               </span>

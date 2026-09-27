@@ -30,11 +30,11 @@ export async function generateMetadata({
   const product = await getProductDetail(id);
 
   if (!product) {
-    return { title: "ไม่พบสินค้า | Momotaro Shop" };
+    return { title: "ไม่พบสินค้า | One Box Shop" };
   }
 
   return {
-    title: `${product.name} | Momotaro Shop`,
+    title: `${product.name} | One Box Shop`,
     description: product.description.slice(0, 160),
   };
 }

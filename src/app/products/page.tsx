@@ -10,7 +10,7 @@ import { defaultCatalogBanner } from "@/lib/site-data";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "รวมสินค้า | Momotaro Shop",
+  title: "รวมสินค้า | One Box Shop",
   description:
     "เลือกชมโมเดล ฟิกเกอร์ และของสะสมลิขสิทธิ์จากประเทศญี่ปุ่น ทุกซีรีส์ยอดนิยมจากร้าน Momotaro Shop",
 };

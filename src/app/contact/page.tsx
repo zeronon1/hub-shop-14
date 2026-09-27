@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getContactPageContent();
   return {
-    title: `${content.title} | Momotaro Shop`,
+    title: `${content.title} | One Box Shop`,
     description: content.subtitle || content.intro,
   };
 }

@@ -27,7 +27,7 @@ export default function ShopServicesSection({ data }: ShopServicesSectionProps) 
               <ul className="space-y-2 text-sm text-neutral-700">
                 {section.items.map((item) => (
                   <li key={item} className="flex gap-2">
-                    <span className="text-sky-500">•</span>
+                    <span className="text-black">•</span>
                     <span>{item}</span>
                   </li>
                 ))}

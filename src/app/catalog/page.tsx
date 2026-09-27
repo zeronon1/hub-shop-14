@@ -10,7 +10,7 @@ import { defaultCatalogBanner } from "@/lib/site-data";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "หมวดหมู่รวม | Momotaro Shop",
+  title: "หมวดหมู่รวม | One Box Shop",
   description:
     "เลือกชมหมวดหมู่สินค้า One Piece, Demon Slayer, Naruto, My Hero Academia, Jujutsu Kaisen และอีกมากมาย จากร้าน Momotaro Shop",
 };

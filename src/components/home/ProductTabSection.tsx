@@ -6,7 +6,6 @@ import ProductCard from "@/components/home/ProductCard";
 import type { HomeBanner } from "@/lib/homepage-types";
 import type { Product } from "@/lib/site-data";
 
-const RECOMMEND_BG = "/bg/bg-recommend-dark-red-lightning-embers.png";
 const NEW_ARRIVAL_BG = "/bg/bg-new-arrival-washi-seigaiha-clouds.png";
 
 type TabOption = {
@@ -50,18 +49,16 @@ export default function ProductTabSection({
 
   if (tabs.length === 0 || products.length === 0) return null;
 
-  const sectionBg = isRecommend
-    ? RECOMMEND_BG
-    : darkBg
-      ? NEW_ARRIVAL_BG
-      : null;
+  const sectionBg = !isRecommend && darkBg ? NEW_ARRIVAL_BG : null;
 
   return (
     <section
       className={`px-4 py-12 sm:py-16 lg:px-8 lg:py-20 ${
-        sectionBg
-          ? "bg-cover bg-center bg-no-repeat"
-          : "bg-white"
+        isRecommend
+          ? "bg-black"
+          : sectionBg
+            ? "bg-cover bg-center bg-no-repeat"
+            : "bg-white"
       }`}
       style={sectionBg ? { backgroundImage: `url(${sectionBg})` } : undefined}
     >
@@ -94,9 +91,11 @@ export default function ProductTabSection({
               onClick={() => setActiveTab(tab.id)}
               className={`shrink-0 text-xs font-medium transition-colors sm:text-sm ${
                 activeTab === tab.id
-                  ? "text-red underline decoration-2 underline-offset-4 decoration-red"
+                  ? isRecommend
+                    ? "text-white underline decoration-2 underline-offset-4 decoration-white"
+                    : "text-red underline decoration-2 underline-offset-4 decoration-red"
                   : isRecommend
-                    ? "text-white/85 hover:text-red"
+                    ? "text-white/85 hover:text-white"
                     : "text-foreground hover:text-red"
               }`}
             >

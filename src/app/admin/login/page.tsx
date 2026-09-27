@@ -97,7 +97,7 @@ export default function AdminLoginPage() {
         <div className="mb-8 text-center">
           <p className="text-xs font-semibold uppercase tracking-wide text-red">Admin Panel</p>
           <h1 className="mt-2 text-2xl font-bold text-gray-900">เข้าสู่ระบบ</h1>
-          <p className="mt-2 text-sm text-gray-500">Momotaro Shop Management</p>
+          <p className="mt-2 text-sm text-gray-500">One Box Shop Management</p>
         </div>
         <Suspense fallback={<p className="text-sm text-gray-500">กำลังโหลด...</p>}>
           <LoginForm />

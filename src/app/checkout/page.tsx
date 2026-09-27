@@ -4,7 +4,7 @@ import Footer from "@/components/layout/Footer";
 import CheckoutClient from "@/components/cart/CheckoutClient";
 
 export const metadata: Metadata = {
-  title: "ชำระเงิน | Momotaro Shop",
+  title: "ชำระเงิน | One Box Shop",
   description: "กรอกข้อมูลและชำระเงินอย่างปลอดภัย",
 };
 

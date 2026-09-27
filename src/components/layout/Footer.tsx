@@ -13,7 +13,7 @@ function SocialLinks({ contact }: { contact: SiteContactInfo }) {
         href={contact.facebookUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white transition-colors hover:bg-red hover:text-white"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white transition-colors hover:bg-white hover:text-black"
         aria-label="Facebook"
       >
         <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -24,7 +24,7 @@ function SocialLinks({ contact }: { contact: SiteContactInfo }) {
         href={contact.lineUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white transition-colors hover:bg-red hover:text-white"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white transition-colors hover:bg-white hover:text-black"
         aria-label="Line"
       >
         <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -36,7 +36,7 @@ function SocialLinks({ contact }: { contact: SiteContactInfo }) {
           href={contact.tiktokUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white transition-colors hover:bg-red hover:text-white"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white transition-colors hover:bg-white hover:text-black"
           aria-label="TikTok"
         >
           <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -46,7 +46,7 @@ function SocialLinks({ contact }: { contact: SiteContactInfo }) {
       ) : null}
       <a
         href={mailtoHref(contact.emails)}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white transition-colors hover:bg-red hover:text-white"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white transition-colors hover:bg-white hover:text-black"
         aria-label="Email"
       >
         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
@@ -87,7 +87,7 @@ export default async function Footer() {
               ) : null}
               <p>
                 อีเมล:{" "}
-                <a href={mailtoHref(contact.emails)} className="hover:text-red">
+                <a href={mailtoHref(contact.emails)} className="hover:underline">
                   {formatEmails(contact.emails)}
                 </a>
               </p>
@@ -100,7 +100,7 @@ export default async function Footer() {
                   href={contact.facebookUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-red"
+                  className="hover:underline"
                 >
                   {contact.facebookPageName}
                 </a>
@@ -111,7 +111,7 @@ export default async function Footer() {
                   href={contact.lineUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-red"
+                  className="hover:underline"
                 >
                   {contact.lineId}
                 </a>
@@ -123,7 +123,7 @@ export default async function Footer() {
                     href={contact.tiktokUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-red"
+                    className="hover:underline"
                   >
                     {contact.tiktokHandle}
                   </a>
@@ -138,7 +138,7 @@ export default async function Footer() {
             <ul className="space-y-2 text-sm text-white">
               {navigation.footerHome.map((link) => (
                 <li key={`${link.href}-${link.label}`}>
-                  <Link href={link.href} className="transition-colors hover:text-red">
+                  <Link href={link.href} className="transition-colors hover:underline">
                     {link.label}
                   </Link>
                 </li>
@@ -151,7 +151,7 @@ export default async function Footer() {
             <ul className="space-y-2 text-sm text-white">
               {navigation.footerMenu.map((link) => (
                 <li key={`${link.href}-${link.label}`}>
-                  <Link href={link.href} className="transition-colors hover:text-red">
+                  <Link href={link.href} className="transition-colors hover:underline">
                     {link.label}
                   </Link>
                 </li>

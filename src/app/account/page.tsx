@@ -4,7 +4,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "สมาชิก | Momotaro Shop",
+  title: "สมาชิก | One Box Shop",
   description: "เข้าสู่ระบบหรือสมัครสมาชิก Momotaro Shop เพื่อติดตามออเดอร์และรับสิทธิพิเศษ",
 };
 

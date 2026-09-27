@@ -18,9 +18,9 @@ const notoSansThai = Noto_Sans_Thai({
 });
 
 export const metadata: Metadata = {
-  title: "Momotaro Shop",
+  title: "One Box Shop",
   description:
-    "Momotaro Shop ร้านโมเดล ฟิกเกอร์ และของสะสมลิขสิทธิ์จากประเทศญี่ปุ่น Ichiban Kuji, MASTERLISE, Grandista และ Prize Figure สำหรับนักสะสมทุกระดับ",
+    "One Box Shop ร้านโมเดล ฟิกเกอร์ และของสะสมลิขสิทธิ์จากประเทศญี่ปุ่น Ichiban Kuji, MASTERLISE, Grandista และ Prize Figure สำหรับนักสะสมทุกระดับ",
 };
 
 export const viewport = {

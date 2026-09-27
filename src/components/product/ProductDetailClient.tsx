@@ -262,7 +262,7 @@ export default function ProductDetailClient({ product, contact }: ProductDetailC
               ) : null}
               <a
                 href={mailtoHref(contact.emails)}
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-sky-500 text-white transition-transform hover:scale-105"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-black text-white transition-transform hover:scale-105"
                 aria-label="ส่งอีเมล"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">

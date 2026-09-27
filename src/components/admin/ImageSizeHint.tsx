@@ -23,14 +23,14 @@ export default function ImageSizeHint({ spec, imageUrl, className = "" }: ImageS
   const objectFitLabel = spec.objectFit === "contain" ? "พอดีกรอบ (contain)" : "เต็มกรอบ (cover)";
 
   return (
-    <div className={`rounded-lg border border-blue-100 bg-blue-50/80 px-3 py-2 text-xs text-blue-950 ${className}`}>
-      <p className="font-semibold text-blue-900">ขนาดรูปที่แนะนำ — {spec.label}</p>
+    <div className={`rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 text-xs text-neutral-900 ${className}`}>
+      <p className="font-semibold text-neutral-900">ขนาดรูปที่แนะนำ — {spec.label}</p>
       <p className="mt-1">
         <span className="font-medium">แนะนำ:</span> {recommended} · {objectFitLabel}
       </p>
-      {spec.notes ? <p className="mt-1 text-blue-800/80">{spec.notes}</p> : null}
+      {spec.notes ? <p className="mt-1 text-neutral-700">{spec.notes}</p> : null}
       {imageUrl ? (
-        <p className="mt-1.5 border-t border-blue-100 pt-1.5">
+        <p className="mt-1.5 border-t border-neutral-200 pt-1.5">
           <span className="font-medium">รูปปัจจุบัน:</span>{" "}
           {loading ? "กำลังอ่านขนาด..." : currentSize ?? "อ่านขนาดไม่ได้"}
           {currentRatio ? ` (${currentRatio})` : ""}
@@ -46,7 +46,7 @@ export default function ImageSizeHint({ spec, imageUrl, className = "" }: ImageS
           ) : null}
         </p>
       ) : (
-        <p className="mt-1.5 text-blue-800/70">อัปโหลดรูปแล้วจะแสดงขนาดจริงของไฟล์ที่ใส่อยู่</p>
+        <p className="mt-1.5 text-neutral-600">อัปโหลดรูปแล้วจะแสดงขนาดจริงของไฟล์ที่ใส่อยู่</p>
       )}
     </div>
   );

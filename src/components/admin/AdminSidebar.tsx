@@ -40,7 +40,7 @@ export default function AdminSidebar({ adminName }: AdminSidebarProps) {
   return (
     <aside className="flex w-64 shrink-0 flex-col border-r border-gray-200 bg-white">
       <div className="border-b border-gray-100 px-5 py-5">
-        <p className="text-xs font-semibold uppercase tracking-wide text-red">Momotaro Shop Admin</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-red">One Box Shop Admin</p>
         <p className="mt-1 text-sm text-gray-600">{adminName ?? "Administrator"}</p>
       </div>
       <nav className="flex-1 space-y-1 p-3">

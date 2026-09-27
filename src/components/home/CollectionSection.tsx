@@ -9,14 +9,14 @@ type CollectionSectionProps = {
 export default function CollectionSection({ data }: CollectionSectionProps) {
   return (
     <section className="relative overflow-hidden bg-panel-gradient px-4 py-14 sm:py-16 lg:px-8 lg:py-24">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(56,189,248,0.28),transparent_55%),radial-gradient(ellipse_at_bottom_left,rgba(255,255,255,0.08),transparent_50%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.16),transparent_55%),radial-gradient(ellipse_at_bottom_left,rgba(255,255,255,0.08),transparent_50%)]" />
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-12 lg:gap-14">
         <div className="lg:col-span-5 lg:col-start-1">
           <div className="relative mx-auto max-w-md lg:max-w-none">
             <div
               aria-hidden="true"
-              className="absolute -right-3 -top-3 h-full w-full border-2 border-red sm:-right-4 sm:-top-4"
+              className="absolute -right-3 -top-3 h-full w-full border-2 border-white sm:-right-4 sm:-top-4"
             />
             <div className="relative border border-white/20 bg-white/5 p-2 shadow-[0_24px_60px_rgba(0,0,0,0.45)] sm:p-3">
               <div className="relative aspect-[3/4] overflow-hidden bg-black">
@@ -31,7 +31,7 @@ export default function CollectionSection({ data }: CollectionSectionProps) {
             </div>
             <div
               aria-hidden="true"
-              className="absolute -bottom-3 -left-3 hidden h-16 w-16 border-b-2 border-l-2 border-red sm:block"
+              className="absolute -bottom-3 -left-3 hidden h-16 w-16 border-b-2 border-l-2 border-white sm:block"
             />
           </div>
         </div>

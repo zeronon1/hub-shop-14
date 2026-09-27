@@ -4,7 +4,7 @@ import Footer from "@/components/layout/Footer";
 import CartClient from "@/components/cart/CartClient";
 
 export const metadata: Metadata = {
-  title: "ตะกร้าสินค้า | Momotaro Shop",
+  title: "ตะกร้าสินค้า | One Box Shop",
   description: "ตะกร้าสินค้าของคุณ — โมเดล ฟิกเกอร์ และของสะสมลิขสิทธิ์จาก Momotaro Shop",
 };
 

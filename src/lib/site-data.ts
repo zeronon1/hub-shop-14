@@ -1,5 +1,5 @@
 export const siteInfo = {
-  name: "Momotaro Shop",
+  name: "One Box Shop",
   tagline:
     "ร้านโมเดล ฟิกเกอร์ และของสะสมลิขสิทธิ์จากประเทศญี่ปุ่น คัดสรรสินค้าคุณภาพสำหรับนักสะสมทุกระดับ",
   logo: "/logo/logo-one-box-card-game-shop.png",

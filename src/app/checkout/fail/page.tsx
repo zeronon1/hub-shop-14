@@ -4,7 +4,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "ชำระเงินไม่สำเร็จ | Momotaro Shop",
+  title: "ชำระเงินไม่สำเร็จ | One Box Shop",
   description: "การชำระเงินไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
 };
 

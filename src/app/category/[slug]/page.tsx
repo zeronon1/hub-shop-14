@@ -30,11 +30,11 @@ export async function generateMetadata({
   const category = await getCategoryBySlug(slug);
 
   if (!category) {
-    return { title: "ไม่พบหมวดหมู่ | Momotaro Shop" };
+    return { title: "ไม่พบหมวดหมู่ | One Box Shop" };
   }
 
   return {
-    title: `${category.label} | หมวดหมู่รวม | Momotaro Shop`,
+    title: `${category.label} | หมวดหมู่รวม | One Box Shop`,
     description: `เลือกชมโมเดล ฟิกเกอร์ และของสะสม ${category.label} ลิขสิทธิ์แท้จากประเทศญี่ปุ่น ที่ร้าน Momotaro Shop`,
   };
 }
