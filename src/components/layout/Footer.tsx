@@ -75,9 +75,6 @@ export default async function Footer() {
               height={60}
               className="mb-4 h-11 w-auto object-contain brightness-0 invert"
             />
-            <p className="mb-4 max-w-xs text-sm leading-relaxed text-white">
-              {siteInfo.tagline}
-            </p>
             <address className="space-y-2 text-sm not-italic text-white">
               {contact.address ? (
                 <>

@@ -570,10 +570,6 @@ export const footerLinks = {
   home: [
     { label: "หมวดหมู่รวม", href: "/catalog" },
     { label: "รวมสินค้า", href: "/products" },
-    { label: "One Piece", href: "/category/one-piece" },
-    { label: "Demon Slayer", href: "/category/demon-slayer" },
-    { label: "My Hero Academia", href: "/category/mha" },
-    { label: "Jujutsu Kaisen", href: "/category/jjk" },
   ],
 } as const;
 
