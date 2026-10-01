@@ -77,6 +77,14 @@ export const IMAGE_UPLOAD_SPECS = {
     aspectRatio: "21:7",
     objectFit: "cover",
   },
+  productsPageBanner: {
+    label: "Banner หน้ารวมสินค้า",
+    width: 2100,
+    height: 700,
+    aspectRatio: "21:7",
+    objectFit: "cover",
+    notes: "เต็มความกว้างจอ — บนจอใหญ่แสดงอัตราส่วน 21:7",
+  },
   productMain: {
     label: "รูปหลักสินค้า",
     width: 900,

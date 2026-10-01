@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 const pageEditItems = [
   { href: "/admin/homepage", label: "หน้าแรก" },
+  { href: "/admin/products-page", label: "รวมสินค้า" },
   { href: "/admin/order-guide", label: "วิธีสั่งซื้อ" },
   { href: "/admin/contact", label: "ติดต่อเรา" },
 ] as const;
