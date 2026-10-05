@@ -59,7 +59,7 @@ export default function CheckoutClient() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/payments/lianlian/create", {
+      const response = await fetch("/api/checkout/place", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -69,17 +69,15 @@ export default function CheckoutClient() {
       });
 
       const data = (await response.json()) as {
-        payUrl?: string;
         orderNo?: string;
         error?: string;
       };
 
-      if (!response.ok || !data.payUrl) {
-        throw new Error(data.error ?? "ไม่สามารถสร้างรายการชำระเงินได้");
+      if (!response.ok || !data.orderNo) {
+        throw new Error(data.error ?? "ไม่สามารถยืนยันคำสั่งซื้อได้");
       }
 
-      // คง loading ไว้จนกว่าจะออกจากหน้า
-      window.location.assign(data.payUrl);
+      window.location.assign(`/checkout/success?order=${encodeURIComponent(data.orderNo)}`);
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "เกิดข้อผิดพลาด");
       setLoading(false);
@@ -101,9 +99,9 @@ export default function CheckoutClient() {
               aria-hidden="true"
             />
             <div>
-              <p className="text-base font-bold">กำลังเชื่อมต่อระบบชำระเงิน</p>
+              <p className="text-base font-bold">กำลังยืนยันคำสั่งซื้อ</p>
               <p className="mt-1 text-sm text-foreground/65">
-                อาจใช้เวลาสักครู่ กรุณาอย่าปิดหน้านี้
+                กรุณารอสักครู่
               </p>
             </div>
           </div>
@@ -187,10 +185,10 @@ export default function CheckoutClient() {
                   className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"
                   aria-hidden="true"
                 />
-                กำลังเชื่อมต่อ...
+                กำลังยืนยัน...
               </>
             ) : (
-              "ชำระเงินอย่างปลอดภัย"
+              "ชำระเงิน"
             )}
           </button>
         </fieldset>

@@ -298,10 +298,6 @@ export default function OrderDetailClient({ orderId }: OrderDetailClientProps) {
               <dt className="text-gray-500">จัดส่งเมื่อ</dt>
               <dd>{formatDateTime(order.shippedAt)}</dd>
             </div>
-            <div className="flex justify-between gap-4">
-              <dt className="text-gray-500">ช่องทางชำระ</dt>
-              <dd>{order.paymentProvider ?? "-"}</dd>
-            </div>
           </dl>
         </section>
       </div>

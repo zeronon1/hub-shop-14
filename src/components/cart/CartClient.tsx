@@ -150,9 +150,6 @@ export default function CartClient() {
               <span className="text-xl font-bold">{formatBaht(totalBaht)}</span>
             </div>
           </div>
-          <p className="mt-4 text-xs text-foreground/70">
-            ชำระเงินอย่างปลอดภัย
-          </p>
           <Link
             href="/checkout"
             className="mt-5 flex w-full items-center justify-center rounded-full bg-red px-6 py-3.5 text-sm font-bold text-white transition-colors hover:bg-red-dark"

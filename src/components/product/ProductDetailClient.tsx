@@ -206,9 +206,6 @@ export default function ProductDetailClient({ product, contact }: ProductDetailC
                   </button>
                 </div>
 
-                <p className="mt-3 text-center text-xs font-medium text-foreground">
-                  ชำระเงินอย่างปลอดภัย
-                </p>
               </div>
             ) : (
               <div className="rounded-xl border-2 border-neutral-300 bg-cream p-5">

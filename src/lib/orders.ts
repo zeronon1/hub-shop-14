@@ -101,6 +101,7 @@ export async function saveOrder(input: CreateOrderInput): Promise<Order> {
       paymentProvider: input.paymentProvider ?? null,
       ksherOrderNo: input.ksherOrderNo ?? null,
       lianlianOrderId: input.lianlianOrderId ?? null,
+      paidAt: input.status === "paid" ? new Date() : undefined,
       items: {
         create: input.items.map((item) => ({
           productId: item.productId,

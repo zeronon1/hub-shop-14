@@ -5,7 +5,7 @@ import CheckoutClient from "@/components/cart/CheckoutClient";
 
 export const metadata: Metadata = {
   title: "ชำระเงิน | One Box Shop",
-  description: "กรอกข้อมูลและชำระเงินอย่างปลอดภัย",
+  description: "กรอกข้อมูลจัดส่งแล้วยืนยันคำสั่งซื้อ",
 };
 
 export default function CheckoutPage() {
@@ -17,7 +17,7 @@ export default function CheckoutPage() {
           <div className="mx-auto max-w-7xl px-4 py-8 sm:py-10 lg:px-8">
             <h1 className="text-2xl font-bold sm:text-3xl">ชำระเงิน</h1>
             <p className="mt-2 text-sm text-foreground/70 sm:text-base">
-              กรอกข้อมูลจัดส่งแล้วชำระเงินอย่างปลอดภัย
+              กรอกข้อมูลจัดส่งแล้วยืนยันคำสั่งซื้อ
             </p>
           </div>
         </div>
