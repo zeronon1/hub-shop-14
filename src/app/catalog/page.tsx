@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import CatalogHero from "@/components/products/CatalogHero";
 import CategoryGrid from "@/components/products/CategoryGrid";
 import { listCategories } from "@/lib/cms/categories";
-import { defaultCatalogBanner } from "@/lib/site-data";
+import { getCatalogPageContent } from "@/lib/catalog-page";
 
 export const dynamic = "force-dynamic";
 
@@ -16,16 +16,19 @@ export const metadata: Metadata = {
 };
 
 export default async function CatalogPage() {
-  const categories = await listCategories();
+  const [categories, pageContent] = await Promise.all([
+    listCategories(),
+    getCatalogPageContent(),
+  ]);
 
   return (
     <>
       <Header />
       <main className="bg-cream/40">
         <CatalogHero
-          title="หมวดหมู่รวม"
-          description="เลือกหมวดหมู่ที่สนใจเพื่อดูสินค้าเฉพาะซีรีส์ — แต่ละหมวดมี banner และสินค้าแยกตามซีรีส์"
-          banner={defaultCatalogBanner}
+          title={pageContent.title}
+          description={pageContent.description}
+          banner={pageContent.banner}
         />
         <div className="mx-auto max-w-7xl px-4 py-8 sm:py-12 lg:px-8">
           <CategoryGrid categories={categories} />

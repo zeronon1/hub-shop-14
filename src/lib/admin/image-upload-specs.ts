@@ -85,6 +85,14 @@ export const IMAGE_UPLOAD_SPECS = {
     objectFit: "cover",
     notes: "เต็มความกว้างจอ — บนจอใหญ่แสดงอัตราส่วน 21:7",
   },
+  catalogPageBanner: {
+    label: "Banner หน้าหมวดหมู่รวม",
+    width: 2100,
+    height: 700,
+    aspectRatio: "21:7",
+    objectFit: "cover",
+    notes: "เต็มความกว้างจอ — บนจอใหญ่แสดงอัตราส่วน 21:7",
+  },
   productMain: {
     label: "รูปหลักสินค้า",
     width: 900,
